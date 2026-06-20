@@ -26,3 +26,6 @@ outputs/logs/
 
 # macOS
 .DS_Store
+
+# harness
+.claude/
