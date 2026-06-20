@@ -415,10 +415,28 @@ class YouTubeApiCollector(Collector):
             raise RuntimeError("daily quota exceeded — stopping to avoid silent failures")
 
     def _resolve_channel_id(self, ref: str) -> str | None:
+        """Resolve a seed reference to a channel id (UC...). Handles all the forms that show
+        up in the seed CSV: bare UC id, @handle, /channel/UC... URLs, and /@handle URLs.
+        Only @handles cost a resolve API call; channel-id URLs are used directly (free)."""
         ref = ref.strip()
+        # bare channel id
         if ref.startswith("UC") and len(ref) == 24:
             return ref
-        handle = ref.lstrip("@") if not ref.startswith("http") else ref.rstrip("/").split("/")[-1].lstrip("@")
+        # channel-id URL: .../channel/UCxxxx  -> use the id directly, no API call needed
+        if "/channel/" in ref:
+            cid = ref.split("/channel/")[1].split("/")[0].split("?")[0]
+            if cid.startswith("UC"):
+                return cid
+        # extract a handle from either '@handle', a '/@handle' URL, or a bare 'name'
+        if "/@" in ref:
+            handle = ref.split("/@")[1].split("/")[0].split("?")[0]
+        elif ref.startswith("@"):
+            handle = ref[1:]
+        elif ref.startswith("http"):
+            # some other URL form (e.g. /c/Name or /user/Name) — try the last path segment
+            handle = ref.rstrip("/").split("/")[-1].lstrip("@")
+        else:
+            handle = ref
         res = self._retrying(
             lambda: self._yt.channels().list(part="id", forHandle=handle).execute(),
             f"resolve {ref}",
@@ -430,7 +448,9 @@ class YouTubeApiCollector(Collector):
     def get_channel_metadata(self, ref: str) -> dict | None:
         cache = _cache_path(self.cfg, "channels", ref)
         cached = _read_cache(cache)
-        if cached is not None:
+        # Only reuse a cached channel record if it's API-shaped (has the uploads playlist).
+        # yt-dlp-shaped records (from a prior backend) lack it and would break listing.
+        if cached is not None and cached.get("uploads_playlist"):
             self.stats["cache_hits"] += 1
             return cached
         cid = self._resolve_channel_id(ref)

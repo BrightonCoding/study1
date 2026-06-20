@@ -73,10 +73,29 @@ class Cfg:
         return _dt.datetime.now(_dt.timezone.utc).date()
 
 
+def load_dotenv(root: Path = ROOT) -> None:
+    """Load KEY=VALUE pairs from .env / .env.local into os.environ (no extra dependency).
+    Precedence: .env.local overrides .env. Existing real env vars are NOT overwritten.
+    Lets the API backend read YOUTUBE_API_KEY without exporting it manually each run."""
+    for name in (".env", ".env.local"):
+        f = root / name
+        if not f.exists():
+            continue
+        for line in f.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            k, v = k.strip(), v.strip().strip('"').strip("'")
+            if k and v:
+                os.environ[k] = v  # .env.local (loaded 2nd) wins over .env
+
+
 def load_config(path: str | os.PathLike | None = None) -> Cfg:
     p = Path(path) if path else DEFAULT_CONFIG_PATH
     with open(p, "r") as f:
         data = yaml.safe_load(f)
+    load_dotenv()
     return Cfg(data)
 
 

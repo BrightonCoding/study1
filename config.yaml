@@ -36,7 +36,7 @@ niche:
   discover_per_keyword: 40        # search results pulled per keyword before dedup
 
 collection:
-  backend: "yt_dlp"             # "yt_dlp" (no quota, primary) or "youtube_api" (alt)
+  backend: "youtube_api"        # "yt_dlp" (no quota) or "youtube_api" (no bot-throttle, needs key)
   # --- sampling caps ---
   max_channels: 250             # full-run target for the seed list (M3); ~150-300
   videos_per_channel: 120       # most-recent uploads to pull per channel

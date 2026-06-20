@@ -3,7 +3,7 @@
 Two panels. **Snapshot caveat:** view/like/comment counts are accumulated values at `scrape_date`, not a time series — always control for `days_since_upload` and prefer `engagement_rate`. The longitudinal `rescrape` dataset (M5) carries true trajectories.
 
 ## 1. video-level panel (`video_panel.parquet`)
-1025 rows × 54 cols.
+26900 rows × 54 cols.
 
 | column | description |
 |---|---|
@@ -63,7 +63,7 @@ Two panels. **Snapshot caveat:** view/like/comment counts are accumulated values
 | `formula_adherence_combined_z` | formula_adherence_combined z-scored WITHIN channel. |
 
 ## 2. channel-week panel (`channel_week_panel.parquet`)
-806 rows × 24 cols. Aggregated to (channel_ref, iso_week).
+11466 rows × 24 cols. Aggregated to (channel_ref, iso_week).
 
 | column | description |
 |---|---|

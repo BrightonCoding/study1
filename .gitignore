@@ -1,5 +1,7 @@
 # secrets
 .env
+.env.local
+.env.*.local
 
 # python
 __pycache__/
@@ -13,10 +15,14 @@ data/thumbnails/
 data/embeddings/
 data/panels/
 outputs/logs/
-outputs/plots/
-outputs/tables/
+
+# results ARE versioned (small + the point of the repo): FINDINGS.md, tables, plots.
+# Only logs and large/regenerable data are excluded above.
 
 # keep the reproducibility anchors and docs
 !data/seeds/
 !data/seeds/seed_channels.csv
 !docs/
+
+# macOS
+.DS_Store
