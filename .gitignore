@@ -1,0 +1,22 @@
+# secrets
+.env
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# data artifacts — large / regenerable. Seed CSV + data dictionary ARE versioned (see !below).
+data/raw/
+data/thumbnails/
+data/embeddings/
+data/panels/
+outputs/logs/
+outputs/plots/
+outputs/tables/
+
+# keep the reproducibility anchors and docs
+!data/seeds/
+!data/seeds/seed_channels.csv
+!docs/

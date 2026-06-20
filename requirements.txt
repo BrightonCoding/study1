@@ -1,0 +1,25 @@
+# Study 1 — pinned for reproducibility. Python 3.13.
+setuptools>=70                       # provides pkg_resources for some source builds
+# --- collection (M1/M3/M5) ---
+yt-dlp==2026.6.9                     # YouTube breaks older yt-dlp; keep this current
+requests==2.32.3
+google-api-python-client==2.137.0   # only needed if collection.backend == youtube_api
+PyYAML==6.0.2
+pandas==2.2.3
+pyarrow==18.1.0                       # 18.x ships cp313 wheels (17.x does not)
+tqdm==4.66.5
+
+# --- embeddings (M2) ---
+# torch wheels are platform-specific; on Apple Silicon `pip install torch` pulls the
+# correct mps-enabled build. Pinned loosely to avoid resolver pain across platforms.
+torch>=2.2,<3.0
+open-clip-torch==2.24.0
+sentence-transformers>=3.0
+Pillow==10.4.0
+numpy>=2.0,<3          # 2.x ships cp313 wheels; 1.26.x does not
+
+# --- analysis (M4) ---
+statsmodels>=0.14.2
+linearmodels>=6.1
+scipy>=1.14.1          # 1.14+ ships cp313 wheels
+matplotlib==3.9.2

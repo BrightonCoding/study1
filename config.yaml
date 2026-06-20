@@ -1,0 +1,113 @@
+# =============================================================================
+# Study 1 — Stylistic homogeneity -> engagement wear-out on YouTube
+# SINGLE SOURCE OF CONFIGURATION. No magic numbers should live in code.
+# Every stage (collect / embed / features / build_panel / analyze / rescrape)
+# reads from here via src/config.py.
+# =============================================================================
+
+project:
+  name: "study1-homogeneity-engagement"
+  # The scrape_date is stamped at run time (UTC date). Used to compute video age.
+  # Leave null to use "today" at run time; set explicitly only to reproduce a past run.
+  scrape_date: null
+  random_seed: 20240617          # determinism for any sampling / shuffling
+
+niche:
+  # Fix ONE niche to hold topic roughly constant. Swap this block to change niche.
+  name: "personal_finance"
+  # Keywords used for *search-based* channel discovery (expansion beyond the hand seed).
+  search_keywords:
+    - "personal finance explained"
+    - "how to invest for beginners"
+    - "index funds explained"
+    - "budgeting tips"
+    - "stock market for beginners"
+    - "roth ira explained"
+    - "how to save money"
+    - "dividend investing for beginners"
+    - "401k explained"
+    - "compound interest explained"
+    - "financial independence retire early"
+    - "credit score explained"
+    - "etf vs index fund"
+    - "how to build wealth"
+    - "passive income ideas investing"
+    - "stock market crash explained"
+  discover_per_keyword: 40        # search results pulled per keyword before dedup
+
+collection:
+  backend: "yt_dlp"             # "yt_dlp" (no quota, primary) or "youtube_api" (alt)
+  # --- sampling caps ---
+  max_channels: 250             # full-run target for the seed list (M3); ~150-300
+  videos_per_channel: 120       # most-recent uploads to pull per channel
+  # --- SMOKE TEST overrides (M1): keep small & fast ---
+  smoke:
+    max_channels: 10
+    videos_per_channel: 25
+  # --- politeness / robustness ---
+  # concurrency: parallel per-video extractions. The bounded worker pool IS the politeness
+  # limit; when >1 the per-call sleep is skipped. 1 = fully sequential (uses rate_limit_seconds).
+  # 6 is a tested, well-behaved middle ground (0 failures in benchmarking); raise with care.
+  concurrency: 6
+  rate_limit_seconds: 1.0       # min sleep between network extractions (only when concurrency==1)
+  max_retries: 4                # retry attempts on transient failures
+  retry_backoff_seconds: 2.0    # base for exponential backoff
+  download_thumbnails: true     # cache thumbnails locally during collection
+  thumbnail_pref:               # highest-res first, fall back down the list
+    - "maxresdefault"
+    - "sddefault"
+    - "hqdefault"
+  # Shorts: detected via duration<=short_max_seconds OR /shorts/ URL. FLAGGED, never dropped.
+  short_max_seconds: 60
+
+youtube_api:
+  # Only used when collection.backend == "youtube_api".
+  api_key_env: "YOUTUBE_API_KEY"   # read from environment / .env; never hardcode
+  daily_quota_units: 10000         # default project quota; we log spend against this
+
+embedding:
+  # M2. Pinned model versions for reproducibility.
+  thumbnail_model: "ViT-B-32"            # open_clip architecture
+  thumbnail_pretrained: "openai"         # open_clip pretrained tag
+  title_backend: "sentence_transformers" # "sentence_transformers" or "clip_text"
+  title_model: "all-MiniLM-L6-v2"        # sentence-transformers model
+  combined:
+    enabled: true
+    # L2-normalize each, then weighted-concat. Weights need not sum to 1 (we renormalize).
+    thumbnail_weight: 1.0
+    title_weight: 1.0
+  device: "auto"                         # "auto" -> cuda/mps if available else cpu
+  batch_size: 32
+
+features:
+  trailing_window_n: 10        # N previous videos for trailing-centroid similarity (a)
+  rolling_window_k: 10         # K recent videos for sparse-channel rolling homogeneity (b)
+  min_uploads_for_week: 2      # weeks need >= this many uploads for pairwise homogeneity
+  # niche-level (c): fraction of niche top performers (by engagement_rate) defining centroid
+  niche_top_fraction: 0.10
+  standardize_within_channel: true   # z-score homogeneity scores within channel
+
+analysis:
+  cluster_by: "channel_id"     # cluster-robust SE dimension
+  min_videos_per_channel: 5    # drop channels too small for within-channel inference
+  variants:                    # which embedding variants to run models on
+    - "thumbnail"
+    - "title"
+    - "combined"
+  add_week_dummies: false      # optional time effects in the core model
+
+paths:
+  data_dir: "data"
+  raw_dir: "data/raw"
+  thumbnails_dir: "data/thumbnails"
+  embeddings_dir: "data/embeddings"
+  panels_dir: "data/panels"
+  seeds_dir: "data/seeds"
+  outputs_dir: "outputs"
+  tables_dir: "outputs/tables"
+  plots_dir: "outputs/plots"
+  logs_dir: "outputs/logs"
+  seed_channels_csv: "data/seeds/seed_channels.csv"
+  video_panel_parquet: "data/panels/video_panel.parquet"
+  channel_week_panel_parquet: "data/panels/channel_week_panel.parquet"
+  longitudinal_parquet: "data/panels/longitudinal_snapshots.parquet"  # rescrape appends here
