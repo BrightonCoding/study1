@@ -1,0 +1,82 @@
+project:
+  name: study1-homogeneity-engagement
+  scrape_date: null
+  random_seed: 20240617
+niche:
+  name: beauty
+  search_keywords:
+  - makeup tutorial
+  - makeup transformation
+  - drugstore makeup
+  - skincare routine
+  - everyday makeup look
+  - grwm makeup
+  - makeup for beginners
+  - foundation routine
+  - eyeshadow tutorial
+  - get ready with me
+  - full face makeup
+  - viral makeup hack
+  - no makeup makeup look
+  - makeup review
+  discover_per_keyword: 40
+collection:
+  backend: youtube_api
+  max_channels: 80
+  videos_per_channel: 120
+  smoke:
+    max_channels: 10
+    videos_per_channel: 25
+  concurrency: 6
+  rate_limit_seconds: 1.0
+  max_retries: 4
+  retry_backoff_seconds: 2.0
+  download_thumbnails: true
+  thumbnail_pref:
+  - maxresdefault
+  - sddefault
+  - hqdefault
+  short_max_seconds: 60
+youtube_api:
+  api_key_env: YOUTUBE_API_KEY
+  daily_quota_units: 10000
+embedding:
+  thumbnail_model: ViT-B-32
+  thumbnail_pretrained: openai
+  title_backend: sentence_transformers
+  title_model: all-MiniLM-L6-v2
+  combined:
+    enabled: true
+    thumbnail_weight: 1.0
+    title_weight: 1.0
+  device: auto
+  batch_size: 32
+features:
+  trailing_window_n: 10
+  rolling_window_k: 10
+  min_uploads_for_week: 2
+  niche_top_fraction: 0.1
+  standardize_within_channel: true
+analysis:
+  cluster_by: channel_id
+  min_videos_per_channel: 5
+  variants:
+  - thumbnail
+  - title
+  - combined
+  add_week_dummies: false
+paths:
+  data_dir: data/beauty
+  raw_dir: data/beauty/raw
+  thumbnails_dir: data/beauty/thumbnails
+  embeddings_dir: data/beauty/embeddings
+  panels_dir: data/beauty/panels
+  seeds_dir: data/beauty/seeds
+  outputs_dir: outputs/beauty
+  tables_dir: outputs/beauty/tables
+  plots_dir: outputs/beauty/plots
+  logs_dir: outputs/beauty/logs
+  seed_channels_csv: data/beauty/seeds/seed_channels.csv
+  video_panel_parquet: data/beauty/panels/video_panel.parquet
+  channel_week_panel_parquet: data/beauty/panels/channel_week_panel.parquet
+  longitudinal_parquet: data/beauty/panels/longitudinal_snapshots.parquet

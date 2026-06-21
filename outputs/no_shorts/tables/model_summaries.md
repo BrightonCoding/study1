@@ -1,4 +1,4 @@
-# Model summaries — Study 1
+# Model summaries — Study 1 (Shorts EXCLUDED)
 
 ## 1. Core within-channel association (video-level)
 
@@ -7,62 +7,62 @@ Outcome = engagement_rate. Regressor of interest = formula_adherence (z-scored w
 ### 1.thumbnail — engagement_rate ~ formula_adherence (thumbnail)
 _engagement_rate ~ formula_adherence_z + log_days_since_upload + log_subscribers + upload_frequency + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0027
+N = 20671 videos/obs across 238 channels; within-R² = 0.0049
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `formula_adherence_thumbnail_z` | -0.00068* | 0.00036 | -1.92 | 0.056 | [-0.0014, +0.0000] |
-| `log_days_since_upload` | -0.00165*** | 0.00058 | -2.85 | 0.004 | [-0.0028, -0.0005] |
+| `formula_adherence_thumbnail_z` | -0.00003 | 0.00026 | -0.12 | 0.903 | [-0.0005, +0.0005] |
+| `log_days_since_upload` | -0.00243*** | 0.00058 | -4.17 | 0.000 | [-0.0036, -0.0013] |
 
 ### 1.title — engagement_rate ~ formula_adherence (title)
 _engagement_rate ~ formula_adherence_z + log_days_since_upload + log_subscribers + upload_frequency + ChannelFE_
 
-N = 26150 videos/obs across 238 channels; within-R² = 0.0027
+N = 20672 videos/obs across 238 channels; within-R² = 0.0054
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `formula_adherence_title_z` | -0.00064* | 0.00036 | -1.80 | 0.071 | [-0.0013, +0.0001] |
-| `log_days_since_upload` | -0.00163*** | 0.00057 | -2.86 | 0.004 | [-0.0027, -0.0005] |
+| `formula_adherence_title_z` | -0.00069*** | 0.00021 | -3.21 | 0.001 | [-0.0011, -0.0003] |
+| `log_days_since_upload` | -0.00246*** | 0.00057 | -4.31 | 0.000 | [-0.0036, -0.0013] |
 
 ### 1.combined — engagement_rate ~ formula_adherence (combined)
 _engagement_rate ~ formula_adherence_z + log_days_since_upload + log_subscribers + upload_frequency + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0030
+N = 20671 videos/obs across 238 channels; within-R² = 0.0052
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `formula_adherence_combined_z` | -0.00087** | 0.00035 | -2.50 | 0.012 | [-0.0015, -0.0002] |
-| `log_days_since_upload` | -0.00166*** | 0.00057 | -2.90 | 0.004 | [-0.0028, -0.0005] |
+| `formula_adherence_combined_z` | -0.00051** | 0.00020 | -2.55 | 0.011 | [-0.0009, -0.0001] |
+| `log_days_since_upload` | -0.00246*** | 0.00058 | -4.27 | 0.000 | [-0.0036, -0.0013] |
 
 ### 1.thumbnail.logviews — log_views ~ formula_adherence (thumbnail) [age-controlled]
 _log_views ~ formula_adherence_z + log_days_since_upload + log_subscribers + upload_frequency + ChannelFE_
 
-N = 26658 videos/obs across 238 channels; within-R² = 0.0317
+N = 21041 videos/obs across 238 channels; within-R² = 0.0329
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `formula_adherence_thumbnail_z` | -0.06812*** | 0.01859 | -3.66 | 0.000 | [-0.1046, -0.0317] |
-| `log_days_since_upload` | +0.22277*** | 0.02416 | +9.22 | 0.000 | [+0.1754, +0.2701] |
+| `formula_adherence_thumbnail_z` | -0.01539 | 0.01659 | -0.93 | 0.354 | [-0.0479, +0.0171] |
+| `log_days_since_upload` | +0.24174*** | 0.02675 | +9.04 | 0.000 | [+0.1893, +0.2942] |
 
 ### 1.title.logviews — log_views ~ formula_adherence (title) [age-controlled]
 _log_views ~ formula_adherence_z + log_days_since_upload + log_subscribers + upload_frequency + ChannelFE_
 
-N = 26659 videos/obs across 238 channels; within-R² = 0.0311
+N = 21042 videos/obs across 238 channels; within-R² = 0.0361
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `formula_adherence_title_z` | +0.06179*** | 0.01589 | +3.89 | 0.000 | [+0.0306, +0.0929] |
-| `log_days_since_upload` | +0.22823*** | 0.02404 | +9.50 | 0.000 | [+0.1811, +0.2753] |
+| `formula_adherence_title_z` | +0.06951*** | 0.01613 | +4.31 | 0.000 | [+0.0379, +0.1011] |
+| `log_days_since_upload` | +0.24603*** | 0.02648 | +9.29 | 0.000 | [+0.1941, +0.2979] |
 
 ### 1.combined.logviews — log_views ~ formula_adherence (combined) [age-controlled]
 _log_views ~ formula_adherence_z + log_days_since_upload + log_subscribers + upload_frequency + ChannelFE_
 
-N = 26658 videos/obs across 238 channels; within-R² = 0.0285
+N = 21041 videos/obs across 238 channels; within-R² = 0.0336
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `formula_adherence_combined_z` | -0.00364 | 0.01757 | -0.21 | 0.836 | [-0.0381, +0.0308] |
-| `log_days_since_upload` | +0.22632*** | 0.02416 | +9.37 | 0.000 | [+0.1790, +0.2737] |
+| `formula_adherence_combined_z` | +0.03639** | 0.01635 | +2.23 | 0.026 | [+0.0043, +0.0684] |
+| `log_days_since_upload` | +0.24534*** | 0.02666 | +9.20 | 0.000 | [+0.1931, +0.2976] |
 
 
 ## 6. Wear-out: cumulative formula EXPOSURE (redesign)
@@ -72,155 +72,155 @@ Outcome = engagement_rate. Predictor = accumulated exposure to the channel's for
 ### 6.thumbnail.dose — engagement_rate ~ dose exposure (thumbnail)
 _engagement_rate ~ dose_z + controls + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0023
+N = 20671 videos/obs across 238 channels; within-R² = 0.0051
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `dose_thumbnail_z` | +0.00031 | 0.00031 | +0.99 | 0.320 | [-0.0003, +0.0009] |
-| `log_days_since_upload` | -0.00159*** | 0.00058 | -2.75 | 0.006 | [-0.0027, -0.0005] |
+| `dose_thumbnail_z` | +0.00041 | 0.00033 | +1.24 | 0.214 | [-0.0002, +0.0011] |
+| `log_days_since_upload` | -0.00241*** | 0.00057 | -4.19 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.thumbnail.winshare — engagement_rate ~ winshare exposure (thumbnail)
 _engagement_rate ~ winshare_z + controls + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0024
+N = 20671 videos/obs across 238 channels; within-R² = 0.0051
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `winshare_thumbnail_z` | +0.00031 | 0.00031 | +0.99 | 0.320 | [-0.0003, +0.0009] |
-| `log_days_since_upload` | -0.00159*** | 0.00058 | -2.75 | 0.006 | [-0.0027, -0.0005] |
+| `winshare_thumbnail_z` | +0.00041 | 0.00034 | +1.21 | 0.227 | [-0.0003, +0.0011] |
+| `log_days_since_upload` | -0.00241*** | 0.00057 | -4.19 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.thumbnail.streak — engagement_rate ~ streak exposure (thumbnail)
 _engagement_rate ~ streak_z + controls + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0023
+N = 20671 videos/obs across 238 channels; within-R² = 0.0049
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `streak_thumbnail_z` | +0.00011 | 0.00019 | +0.59 | 0.554 | [-0.0003, +0.0005] |
-| `log_days_since_upload` | -0.00161*** | 0.00058 | -2.79 | 0.005 | [-0.0027, -0.0005] |
+| `streak_thumbnail_z` | +0.00004 | 0.00018 | +0.23 | 0.820 | [-0.0003, +0.0004] |
+| `log_days_since_upload` | -0.00242*** | 0.00057 | -4.22 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.thumbnail.nonlinear — engagement_rate ~ dose + dose^2 (thumbnail)
 _quadratic in cumulative dose; channel FE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0024
+N = 20671 videos/obs across 238 channels; within-R² = 0.0051
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `dose_thumbnail_z` | +0.00037 | 0.00032 | +1.17 | 0.240 | [-0.0002, +0.0010] |
-| `dose_thumbnail_z_sq` | +0.00019* | 0.00011 | +1.82 | 0.068 | [-0.0000, +0.0004] |
-| `log_days_since_upload` | -0.00161*** | 0.00058 | -2.78 | 0.005 | [-0.0027, -0.0005] |
+| `dose_thumbnail_z` | +0.00044 | 0.00034 | +1.29 | 0.196 | [-0.0002, +0.0011] |
+| `dose_thumbnail_z_sq` | +0.00008 | 0.00012 | +0.62 | 0.534 | [-0.0002, +0.0003] |
+| `log_days_since_upload` | -0.00242*** | 0.00058 | -4.20 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.thumbnail.rebound — engagement_rate ~ template_similarity (thumbnail)
 _NEGATIVE => on-formula videos underperform / breaking formula bumps engagement_
 
-N = 26381 videos/obs across 238 channels; within-R² = 0.0027
+N = 20904 videos/obs across 238 channels; within-R² = 0.0049
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `tmpl_sim_thumbnail_z` | -0.00088** | 0.00039 | -2.26 | 0.024 | [-0.0016, -0.0001] |
-| `log_days_since_upload` | -0.00155*** | 0.00060 | -2.58 | 0.010 | [-0.0027, -0.0004] |
+| `tmpl_sim_thumbnail_z` | -0.00035 | 0.00031 | -1.13 | 0.257 | [-0.0010, +0.0003] |
+| `log_days_since_upload` | -0.00240*** | 0.00058 | -4.13 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.title.dose — engagement_rate ~ dose exposure (title)
 _engagement_rate ~ dose_z + controls + ChannelFE_
 
-N = 26150 videos/obs across 238 channels; within-R² = 0.0023
+N = 20672 videos/obs across 238 channels; within-R² = 0.0050
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `dose_title_z` | +0.00008 | 0.00036 | +0.22 | 0.829 | [-0.0006, +0.0008] |
-| `log_days_since_upload` | -0.00161*** | 0.00057 | -2.81 | 0.005 | [-0.0027, -0.0005] |
+| `dose_title_z` | +0.00033 | 0.00036 | +0.91 | 0.362 | [-0.0004, +0.0010] |
+| `log_days_since_upload` | -0.00242*** | 0.00057 | -4.23 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.title.winshare — engagement_rate ~ winshare exposure (title)
 _engagement_rate ~ winshare_z + controls + ChannelFE_
 
-N = 26150 videos/obs across 238 channels; within-R² = 0.0023
+N = 20672 videos/obs across 238 channels; within-R² = 0.0051
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `winshare_title_z` | +0.00013 | 0.00041 | +0.31 | 0.759 | [-0.0007, +0.0009] |
-| `log_days_since_upload` | -0.00161*** | 0.00057 | -2.81 | 0.005 | [-0.0027, -0.0005] |
+| `winshare_title_z` | +0.00041 | 0.00044 | +0.93 | 0.353 | [-0.0005, +0.0013] |
+| `log_days_since_upload` | -0.00242*** | 0.00057 | -4.23 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.title.streak — engagement_rate ~ streak exposure (title)
 _engagement_rate ~ streak_z + controls + ChannelFE_
 
-N = 26150 videos/obs across 238 channels; within-R² = 0.0023
+N = 20672 videos/obs across 238 channels; within-R² = 0.0051
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `streak_title_z` | +0.00025 | 0.00026 | +0.96 | 0.336 | [-0.0003, +0.0008] |
-| `log_days_since_upload` | -0.00161*** | 0.00057 | -2.81 | 0.005 | [-0.0027, -0.0005] |
+| `streak_title_z` | +0.00037 | 0.00028 | +1.32 | 0.187 | [-0.0002, +0.0009] |
+| `log_days_since_upload` | -0.00242*** | 0.00057 | -4.23 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.title.nonlinear — engagement_rate ~ dose + dose^2 (title)
 _quadratic in cumulative dose; channel FE_
 
-N = 26150 videos/obs across 238 channels; within-R² = 0.0023
+N = 20672 videos/obs across 238 channels; within-R² = 0.0050
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `dose_title_z` | +0.00010 | 0.00038 | +0.26 | 0.797 | [-0.0006, +0.0008] |
-| `dose_title_z_sq` | +0.00006 | 0.00010 | +0.56 | 0.572 | [-0.0001, +0.0003] |
-| `log_days_since_upload` | -0.00162*** | 0.00057 | -2.81 | 0.005 | [-0.0027, -0.0005] |
+| `dose_title_z` | +0.00032 | 0.00037 | +0.88 | 0.377 | [-0.0004, +0.0010] |
+| `dose_title_z_sq` | -0.00003 | 0.00009 | -0.30 | 0.766 | [-0.0002, +0.0002] |
+| `log_days_since_upload` | -0.00242*** | 0.00057 | -4.22 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.title.rebound — engagement_rate ~ template_similarity (title)
 _NEGATIVE => on-formula videos underperform / breaking formula bumps engagement_
 
-N = 26381 videos/obs across 238 channels; within-R² = 0.0022
+N = 20904 videos/obs across 238 channels; within-R² = 0.0057
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `tmpl_sim_title_z` | -0.00053 | 0.00034 | -1.56 | 0.118 | [-0.0012, +0.0001] |
-| `log_days_since_upload` | -0.00154** | 0.00060 | -2.55 | 0.011 | [-0.0027, -0.0004] |
+| `tmpl_sim_title_z` | -0.00094*** | 0.00028 | -3.39 | 0.001 | [-0.0015, -0.0004] |
+| `log_days_since_upload` | -0.00239*** | 0.00058 | -4.13 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.combined.dose — engagement_rate ~ dose exposure (combined)
 _engagement_rate ~ dose_z + controls + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0024
+N = 20671 videos/obs across 238 channels; within-R² = 0.0053
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `dose_combined_z` | +0.00033 | 0.00033 | +0.98 | 0.325 | [-0.0003, +0.0010] |
-| `log_days_since_upload` | -0.00160*** | 0.00057 | -2.78 | 0.005 | [-0.0027, -0.0005] |
+| `dose_combined_z` | +0.00062* | 0.00037 | +1.70 | 0.089 | [-0.0001, +0.0013] |
+| `log_days_since_upload` | -0.00241*** | 0.00057 | -4.20 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.combined.winshare — engagement_rate ~ winshare exposure (combined)
 _engagement_rate ~ winshare_z + controls + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0024
+N = 20671 videos/obs across 238 channels; within-R² = 0.0054
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `winshare_combined_z` | +0.00037 | 0.00036 | +1.04 | 0.299 | [-0.0003, +0.0011] |
-| `log_days_since_upload` | -0.00160*** | 0.00057 | -2.78 | 0.005 | [-0.0027, -0.0005] |
+| `winshare_combined_z` | +0.00069* | 0.00042 | +1.65 | 0.099 | [-0.0001, +0.0015] |
+| `log_days_since_upload` | -0.00240*** | 0.00057 | -4.20 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.combined.streak — engagement_rate ~ streak exposure (combined)
 _engagement_rate ~ streak_z + controls + ChannelFE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0023
+N = 20671 videos/obs across 238 channels; within-R² = 0.0049
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `streak_combined_z` | +0.00011 | 0.00023 | +0.47 | 0.639 | [-0.0003, +0.0006] |
-| `log_days_since_upload` | -0.00161*** | 0.00057 | -2.80 | 0.005 | [-0.0027, -0.0005] |
+| `streak_combined_z` | +0.00007 | 0.00019 | +0.35 | 0.726 | [-0.0003, +0.0004] |
+| `log_days_since_upload` | -0.00242*** | 0.00057 | -4.22 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.combined.nonlinear — engagement_rate ~ dose + dose^2 (combined)
 _quadratic in cumulative dose; channel FE_
 
-N = 26149 videos/obs across 238 channels; within-R² = 0.0024
+N = 20671 videos/obs across 238 channels; within-R² = 0.0053
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `dose_combined_z` | +0.00035 | 0.00034 | +1.03 | 0.304 | [-0.0003, +0.0010] |
-| `dose_combined_z_sq` | +0.00008 | 0.00012 | +0.66 | 0.508 | [-0.0002, +0.0003] |
-| `log_days_since_upload` | -0.00161*** | 0.00057 | -2.80 | 0.005 | [-0.0027, -0.0005] |
+| `dose_combined_z` | +0.00063* | 0.00037 | +1.70 | 0.089 | [-0.0001, +0.0014] |
+| `dose_combined_z_sq` | +0.00002 | 0.00012 | +0.16 | 0.872 | [-0.0002, +0.0002] |
+| `log_days_since_upload` | -0.00241*** | 0.00057 | -4.21 | 0.000 | [-0.0035, -0.0013] |
 
 ### 6.combined.rebound — engagement_rate ~ template_similarity (combined)
 _NEGATIVE => on-formula videos underperform / breaking formula bumps engagement_
 
-N = 26381 videos/obs across 238 channels; within-R² = 0.0029
+N = 20904 videos/obs across 238 channels; within-R² = 0.0055
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `tmpl_sim_combined_z` | -0.00097** | 0.00039 | -2.49 | 0.013 | [-0.0017, -0.0002] |
-| `log_days_since_upload` | -0.00154** | 0.00060 | -2.56 | 0.010 | [-0.0027, -0.0004] |
+| `tmpl_sim_combined_z` | -0.00087*** | 0.00032 | -2.76 | 0.006 | [-0.0015, -0.0003] |
+| `log_days_since_upload` | -0.00239*** | 0.00058 | -4.13 | 0.000 | [-0.0035, -0.0013] |
 
 
 ## 2. Channel-week association
@@ -230,29 +230,29 @@ Outcome = mean engagement_rate per (channel, week). Homogeneity = week pairwise 
 ### 2.thumbnail — mean engagement_rate ~ homogeneity (thumbnail)
 _engagement_rate ~ homogeneity_z + log_subscribers + upload_frequency + ChannelFE_
 
-N = 11296 videos/obs across 234 channels; within-R² = 0.0005
+N = 10648 videos/obs across 234 channels; within-R² = 0.0002
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_hom_thumbnail_z` | +0.00057* | 0.00031 | +1.84 | 0.066 | [-0.0000, +0.0012] |
+| `_hom_thumbnail_z` | +0.00040 | 0.00037 | +1.11 | 0.268 | [-0.0003, +0.0011] |
 
 ### 2.title — mean engagement_rate ~ homogeneity (title)
 _engagement_rate ~ homogeneity_z + log_subscribers + upload_frequency + ChannelFE_
 
-N = 11296 videos/obs across 234 channels; within-R² = 0.0005
+N = 10648 videos/obs across 234 channels; within-R² = 0.0007
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_hom_title_z` | -0.00059 | 0.00049 | -1.21 | 0.225 | [-0.0015, +0.0004] |
+| `_hom_title_z` | -0.00071* | 0.00042 | -1.67 | 0.096 | [-0.0015, +0.0001] |
 
 ### 2.combined — mean engagement_rate ~ homogeneity (combined)
 _engagement_rate ~ homogeneity_z + log_subscribers + upload_frequency + ChannelFE_
 
-N = 11296 videos/obs across 234 channels; within-R² = 0.0001
+N = 10648 videos/obs across 234 channels; within-R² = 0.0001
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_hom_combined_z` | -0.00021 | 0.00038 | -0.55 | 0.582 | [-0.0009, +0.0005] |
+| `_hom_combined_z` | -0.00031 | 0.00040 | -0.78 | 0.436 | [-0.0011, +0.0005] |
 
 
 ## 3. Direction / reverse-causation probe (poor-man's Granger)
@@ -262,83 +262,83 @@ Forward: engagement_t ~ homogeneity_{t-1}. Reverse: homogeneity_t ~ engagement_{
 ### 3.thumbnail.forward — engagement_t ~ homogeneity_(t-1)
 _ChannelFE; standardized_
 
-N = 11064 videos/obs across 234 channels; within-R² = 0.0007
+N = 10416 videos/obs across 234 channels; within-R² = 0.0001
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_hom_lag_z` | +0.02560** | 0.01123 | +2.28 | 0.023 | [+0.0036, +0.0476] |
+| `_hom_lag_z` | +0.01177 | 0.01133 | +1.04 | 0.299 | [-0.0104, +0.0340] |
 
 ### 3.thumbnail.reverse — homogeneity_t ~ engagement_(t-1)
 _ChannelFE; standardized_
 
-N = 11163 videos/obs across 234 channels; within-R² = 0.0008
+N = 10528 videos/obs across 234 channels; within-R² = 0.0003
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_eng_lag_z` | +0.02859** | 0.01150 | +2.49 | 0.013 | [+0.0060, +0.0511] |
+| `_eng_lag_z` | +0.01778 | 0.01243 | +1.43 | 0.153 | [-0.0066, +0.0421] |
 
 ### 3.title.forward — engagement_t ~ homogeneity_(t-1)
 _ChannelFE; standardized_
 
-N = 11064 videos/obs across 234 channels; within-R² = 0.0002
+N = 10416 videos/obs across 234 channels; within-R² = 0.0000
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_hom_lag_z` | +0.01316 | 0.01207 | +1.09 | 0.275 | [-0.0105, +0.0368] |
+| `_hom_lag_z` | -0.00089 | 0.01193 | -0.07 | 0.940 | [-0.0243, +0.0225] |
 
 ### 3.title.reverse — homogeneity_t ~ engagement_(t-1)
 _ChannelFE; standardized_
 
-N = 11163 videos/obs across 234 channels; within-R² = 0.0002
+N = 10528 videos/obs across 234 channels; within-R² = 0.0000
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_eng_lag_z` | +0.01343 | 0.01169 | +1.15 | 0.251 | [-0.0095, +0.0363] |
+| `_eng_lag_z` | +0.00201 | 0.01137 | +0.18 | 0.860 | [-0.0203, +0.0243] |
 
 ### 3.combined.forward — engagement_t ~ homogeneity_(t-1)
 _ChannelFE; standardized_
 
-N = 11064 videos/obs across 234 channels; within-R² = 0.0006
+N = 10416 videos/obs across 234 channels; within-R² = 0.0001
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_hom_lag_z` | +0.02344** | 0.01146 | +2.05 | 0.041 | [+0.0010, +0.0459] |
+| `_hom_lag_z` | +0.00718 | 0.01135 | +0.63 | 0.527 | [-0.0151, +0.0294] |
 
 ### 3.combined.reverse — homogeneity_t ~ engagement_(t-1)
 _ChannelFE; standardized_
 
-N = 11163 videos/obs across 234 channels; within-R² = 0.0006
+N = 10528 videos/obs across 234 channels; within-R² = 0.0001
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `_eng_lag_z` | +0.02388** | 0.01185 | +2.01 | 0.044 | [+0.0006, +0.0471] |
+| `_eng_lag_z` | +0.01077 | 0.01217 | +0.88 | 0.376 | [-0.0131, +0.0346] |
 
 
 ## 4. Robustness subsample (strong-start, then homogenized)
 
 Restrict to channels whose EARLY-window engagement was above the niche median AND whose LATE-window formula_adherence rose vs early. If H1 survives here, the effect is not just 'always-struggling channels chasing a formula'.
 
-Subsample: 71 channels meet 'strong start + later homogenized'.
+Subsample: 77 channels meet 'strong start + later homogenized'.
 
 ### 4.thumbnail — engagement_rate ~ formula_adherence (subsample)
 _same spec as Model 1, restricted sample_
 
-N = 7639 videos/obs across 71 channels; within-R² = 0.0003
+N = 6818 videos/obs across 77 channels; within-R² = 0.0023
 
 | term | coef | SE | t | p | 95% CI |
 |---|---:|---:|---:|---:|---|
-| `formula_adherence_thumbnail_z` | -0.00009 | 0.00101 | -0.09 | 0.929 | [-0.0021, +0.0019] |
-| `log_days_since_upload` | -0.00091 | 0.00179 | -0.51 | 0.611 | [-0.0044, +0.0026] |
+| `formula_adherence_thumbnail_z` | +0.00031 | 0.00062 | +0.49 | 0.622 | [-0.0009, +0.0015] |
+| `log_days_since_upload` | -0.00239 | 0.00155 | -1.54 | 0.123 | [-0.0054, +0.0007] |
 
 
 ## 5. Manipulation / sanity checks
 
 **5a. Within-channel SD of formula_adherence (thumbnail)** — the regressor must vary within channel or the test is dead.
 
-- mean within-channel SD = 0.0874; median = 0.0855; share of channels with SD>0.02 = 100%
+- mean within-channel SD = 0.0838; median = 0.0798; share of channels with SD>0.02 = 100%
 
 
-**5b. Thumbnail-sim vs title-sim correlation** (per channel, pairwise): mean = 0.221 (want positive but <1 — related, not redundant).
+**5b. Thumbnail-sim vs title-sim correlation** (per channel, pairwise): mean = 0.246 (want positive but <1 — related, not redundant).
 
 
 **5c. Thumbnail-tile panels** (eyeball the score): `sanity_thumbnail_Erika2.png`, `sanity_thumbnail_https:__www.youtube.com_channel_UC9vUu4vlIlMC0dHQCTvQPbg.png`, `sanity_thumbnail_GrahamStephan.png`

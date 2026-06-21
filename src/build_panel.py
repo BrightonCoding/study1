@@ -145,6 +145,7 @@ def build_video_panel(cfg: Cfg, log) -> pd.DataFrame:
     have = {k: len(d) for k, d in emb_by_variant.items()}
     log.info(f"embeddings available: {have}")
     df = F.add_homogeneity_features(cfg, df, emb_by_variant)
+    df = F.add_exposure_features(cfg, df, emb_by_variant)  # wear-out: cumulative exposure
 
     out = cfg.path("video_panel_parquet")
     df.to_parquet(out, index=False)
@@ -243,6 +244,22 @@ def write_data_dictionary(cfg: Cfg, vdf: pd.DataFrame, cw: pd.DataFrame) -> str:
         "n_videos_collected": "(channel) videos with full metadata collected.",
     }
     for variant in F.VARIANTS:
+        descriptions[f"tmpl_sim_{variant}"] = (
+            f"Cosine of video {variant}-embedding to the channel's overall template centroid "
+            f"(how on-formula this video is)."
+        )
+        descriptions[f"dose_{variant}"] = (
+            f"Wear-out: recency-weighted mean of PAST videos' on-template-ness ({variant}). "
+            f"Higher = audience recently saturated with the formula."
+        )
+        descriptions[f"winshare_{variant}"] = (
+            f"Wear-out: mean on-template-ness over the previous {cfg.features.get('exposure_window_k', 10)} videos ({variant})."
+        )
+        descriptions[f"streak_{variant}"] = (
+            f"Wear-out: # consecutive prior videos above the channel's median template-similarity ({variant})."
+        )
+        for b in ("tmpl_sim", "dose", "winshare", "streak"):
+            descriptions[f"{b}_{variant}_z"] = f"{b}_{variant} z-scored within channel."
         descriptions[f"formula_adherence_{variant}"] = (
             f"(a) cosine of video {variant}-embedding to mean of channel's previous "
             f"{cfg.features.trailing_window_n} videos. Higher=more on-formula. PRIMARY H1 regressor."

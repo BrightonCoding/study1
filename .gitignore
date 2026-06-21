@@ -9,20 +9,19 @@ __pycache__/
 .venv/
 .ipynb_checkpoints/
 
-# data artifacts — large / regenerable. Seed CSV + data dictionary ARE versioned (see !below).
-data/raw/
-data/thumbnails/
-data/embeddings/
-data/panels/
+# data artifacts — large / regenerable, at ANY niche depth (data/raw, data/gaming/raw, ...).
+# ** matches zero or more dirs, so these cover both finance (top-level) and per-niche folders.
+data/**/raw/
+data/**/thumbnails/
+data/**/embeddings/
+data/**/panels/
+
+# logs at any depth may contain API-key-bearing error text — never commit them.
+outputs/**/logs/
 outputs/logs/
 
-# results ARE versioned (small + the point of the repo): FINDINGS.md, tables, plots.
-# Only logs and large/regenerable data are excluded above.
-
-# keep the reproducibility anchors and docs
-!data/seeds/
-!data/seeds/seed_channels.csv
-!docs/
+# results ARE versioned (small + the point of the repo): FINDINGS.md, tables, plots, summary.
+# Only logs and large/regenerable data are excluded above. Seed CSVs (data/**/seeds/) are kept.
 
 # macOS
 .DS_Store

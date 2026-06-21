@@ -82,6 +82,12 @@ embedding:
 features:
   trailing_window_n: 10        # N previous videos for trailing-centroid similarity (a)
   rolling_window_k: 10         # K recent videos for sparse-channel rolling homogeneity (b)
+  # --- cumulative-exposure ("wear-out") measures ---
+  # Wear-out = accumulated audience exposure to the channel's FORMULA before a video, not
+  # mere conformity of that one video. We measure each video's similarity to the channel
+  # template, then accumulate PAST videos' on-template-ness three ways (dose/share/streak).
+  exposure_decay: 0.8          # recency weight: past video j counts decay^(gap) (0<dec<1)
+  exposure_window_k: 10        # K previous videos for the window-share measure
   min_uploads_for_week: 2      # weeks need >= this many uploads for pairwise homogeneity
   # niche-level (c): fraction of niche top performers (by engagement_rate) defining centroid
   niche_top_fraction: 0.10

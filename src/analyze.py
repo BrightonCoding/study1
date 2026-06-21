@@ -181,6 +181,78 @@ def core_video_models(cfg, log, v) -> tuple[list[dict], str]:
     return rows, "\n".join(md)
 
 
+def wear_out_models(cfg, log, v) -> tuple[list[dict], str]:
+    """REDESIGNED wear-out test (video-level). Instead of 'is this video on-formula', the
+    predictor is ACCUMULATED audience exposure to the formula before the video:
+      dose      — recency-weighted past on-template-ness (PRIMARY),
+      winshare  — share of recent window that was on-template,
+      streak    — consecutive prior on-template videos.
+    Wear-out predicts NEGATIVE coefficients. We also test:
+      nonlinear — dose + dose^2 (fatigue may be a threshold, not a line),
+      rebound   — coef on the CURRENT video's template-similarity; NEGATIVE means on-formula
+                  videos underperform / breaking the formula gives a bump.
+    All within-channel (channel FE), channel-clustered SE. Standardized predictors.
+    """
+    md = ["## 6. Wear-out: cumulative formula EXPOSURE (redesign)\n",
+          "Outcome = engagement_rate. Predictor = accumulated exposure to the channel's formula "
+          "BEFORE the video (recency-weighted dose / window-share / streak), z-scored within "
+          "channel. Channel FE; clustered SE. Wear-out => NEGATIVE coefficient.\n"]
+    rows = []
+    for variant in cfg.analysis.variants:
+        specs = [
+            ("dose", f"dose_{variant}_z"),
+            ("winshare", f"winshare_{variant}_z"),
+            ("streak", f"streak_{variant}_z"),
+        ]
+        for label, zcol in specs:
+            if zcol not in v.columns:
+                continue
+            res = _panel_ols(v, "engagement_rate", [zcol] + CONTROLS_VIDEO,
+                             "channel_ref", "video_id")
+            md.append(_fmt_result(
+                f"6.{variant}.{label} — engagement_rate ~ {label} exposure ({variant})",
+                f"engagement_rate ~ {label}_z + controls + ChannelFE", res))
+            if res and "table" in res:
+                r = res["table"].query("term == @zcol")
+                if len(r):
+                    rows.append({"model": f"wearout_{variant}_{label}", "outcome": "engagement_rate",
+                                 **r.iloc[0].to_dict(), "n_obs": res["n_obs"],
+                                 "n_channels": res["n_channels"]})
+        # nonlinear dose (dose + dose^2)
+        zc = f"dose_{variant}_z"
+        if zc in v.columns:
+            vv = v.copy()
+            vv[f"{zc}_sq"] = vv[zc] ** 2
+            res = _panel_ols(vv, "engagement_rate", [zc, f"{zc}_sq"] + CONTROLS_VIDEO,
+                             "channel_ref", "video_id")
+            md.append(_fmt_result(
+                f"6.{variant}.nonlinear — engagement_rate ~ dose + dose^2 ({variant})",
+                "quadratic in cumulative dose; channel FE", res))
+            if res and "table" in res:
+                for term, tag in [(zc, "nonlin_lin"), (f"{zc}_sq", "nonlin_sq")]:
+                    r = res["table"].query("term == @term")
+                    if len(r):
+                        rows.append({"model": f"wearout_{variant}_{tag}", "outcome": "engagement_rate",
+                                     **r.iloc[0].to_dict(), "n_obs": res["n_obs"],
+                                     "n_channels": res["n_channels"]})
+        # novelty rebound: coef on the current video's template similarity
+        ts = f"tmpl_sim_{variant}_z"
+        if ts in v.columns:
+            res = _panel_ols(v, "engagement_rate", [ts] + CONTROLS_VIDEO,
+                             "channel_ref", "video_id")
+            md.append(_fmt_result(
+                f"6.{variant}.rebound — engagement_rate ~ template_similarity ({variant})",
+                "NEGATIVE => on-formula videos underperform / breaking formula bumps engagement",
+                res))
+            if res and "table" in res:
+                r = res["table"].query("term == @ts")
+                if len(r):
+                    rows.append({"model": f"wearout_{variant}_rebound", "outcome": "engagement_rate",
+                                 **r.iloc[0].to_dict(), "n_obs": res["n_obs"],
+                                 "n_channels": res["n_channels"]})
+    return rows, "\n".join(md)
+
+
 def channel_week_models(cfg, log, cw) -> tuple[list[dict], str]:
     """Model 2: channel-week version."""
     md = ["## 2. Channel-week association\n",
@@ -372,6 +444,7 @@ def main(cfg: Cfg, log=None):
     all_rows, sections = [], []
     for fn, args in [
         (core_video_models, (cfg, log, v)),
+        (wear_out_models, (cfg, log, v)),
         (channel_week_models, (cfg, log, cw)),
         (direction_probe, (cfg, log, cw)),
         (robustness_subsample, (cfg, log, v)),

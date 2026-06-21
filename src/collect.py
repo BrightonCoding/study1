@@ -26,9 +26,17 @@ from __future__ import annotations
 
 import datetime as _dt
 import json
+import re
 import time
 from pathlib import Path
 from typing import Any, Iterable
+
+# Google API errors embed the full request URL incl. ?key=AIza... — never let that reach a log.
+_SECRET_RE = re.compile(r"key=AIza[A-Za-z0-9_-]+")
+
+
+def _redact(msg: str) -> str:
+    return _SECRET_RE.sub("key=REDACTED", str(msg))
 
 from .config import Cfg
 from .logging_setup import get_logger
@@ -126,12 +134,12 @@ class Collector:
             except Exception as e:  # noqa: BLE001 - we genuinely want any transient error
                 if self._is_permanent(e):
                     self.stats["failures"] += 1
-                    self.log.info(f"skip {what}: permanent ({str(e)[:90]})")
+                    self.log.info(f"skip {what}: permanent ({_redact(str(e))[:90]})")
                     return None
                 wait = base * (2 ** (attempt - 1))
                 if attempt == tries:
                     self.stats["failures"] += 1
-                    self.log.warning(f"FAILED {what} after {tries} tries: {e}")
+                    self.log.warning(f"FAILED {what} after {tries} tries: {_redact(str(e))}")
                     return None
                 self.log.info(
                     f"retry {attempt}/{tries} for {what} in {wait:.1f}s ({e.__class__.__name__})"

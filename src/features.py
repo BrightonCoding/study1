@@ -153,6 +153,98 @@ def niche_adherence(df, emb: dict[str, np.ndarray], top_fraction: float) -> pd.S
     return out
 
 
+# --------------------------------------------------------------------------- #
+# cumulative-exposure ("wear-out") measures
+# --------------------------------------------------------------------------- #
+def template_similarity(df, emb: dict[str, np.ndarray]) -> pd.Series:
+    """Per-video cosine similarity to its channel's TEMPLATE (the channel's overall centroid).
+    This is 'how on-formula is this video' — order-independent, the building block for the
+    accumulation measures below. (The centroid uses all the channel's videos to DEFINE the
+    formula; the accumulation that follows only ever reads PAST videos.)"""
+    out = pd.Series(np.nan, index=df.index, dtype=float)
+    vid_by_row = df["video_id"].to_dict()
+    for ch, sub in df.groupby("channel_ref"):
+        vecs = {r: emb.get(vid_by_row[r]) for r in sub.index}
+        present = [v for v in vecs.values() if v is not None]
+        if len(present) < 2:
+            continue
+        centroid = np.mean(np.vstack(present), axis=0)
+        nrm = np.linalg.norm(centroid)
+        if nrm == 0:
+            continue
+        centroid = centroid / nrm
+        for r, v in vecs.items():
+            if v is not None:
+                out.at[r] = float(np.dot(v, centroid))
+    return out
+
+
+def exposure_measures(df, tmpl_sim: pd.Series, decay: float, k_window: int):
+    """From per-video template-similarity, build three PAST-only accumulation measures:
+      dose      — recency-weighted mean of past on-template-ness (recent videos weigh more).
+      winshare  — mean on-template-ness over the previous K videos (order-free, robust).
+      streak    — # of consecutive previous videos above the channel's median similarity.
+    All ordered by upload_date within channel; first video per channel = NaN (no history).
+    Returns (dose, winshare, streak) Series aligned to df.index.
+    """
+    dose = pd.Series(np.nan, index=df.index, dtype=float)
+    winshare = pd.Series(np.nan, index=df.index, dtype=float)
+    streak = pd.Series(np.nan, index=df.index, dtype=float)
+
+    order = df.sort_values(["channel_ref", "upload_date", "video_id"], kind="mergesort")
+    for ch, sub in order.groupby("channel_ref", sort=False):
+        rows = sub.index.tolist()
+        s = [tmpl_sim.get(r, np.nan) for r in rows]
+        valid = [x for x in s if not np.isnan(x)]
+        med = np.median(valid) if valid else np.nan
+        for i, r in enumerate(rows):
+            past = [s[j] for j in range(i) if not np.isnan(s[j])]
+            if not past:
+                continue
+            # recency-weighted dose: most-recent past video weight 1, older decay^gap
+            w = np.array([decay ** (len(past) - 1 - t) for t in range(len(past))])
+            dose.at[r] = float(np.dot(w, past) / w.sum())
+            # window-share: mean over previous K
+            win = [s[j] for j in range(max(0, i - k_window), i) if not np.isnan(s[j])]
+            if win:
+                winshare.at[r] = float(np.mean(win))
+            # streak: consecutive previous above channel median
+            if not np.isnan(med):
+                cnt = 0
+                for j in range(i - 1, -1, -1):
+                    if np.isnan(s[j]):
+                        break
+                    if s[j] > med:
+                        cnt += 1
+                    else:
+                        break
+                streak.at[r] = float(cnt)
+    return dose, winshare, streak
+
+
+def add_exposure_features(cfg, df: pd.DataFrame, emb_by_variant) -> pd.DataFrame:
+    """Attach template_similarity + dose/winshare/streak (and within-channel z-scores) per
+    variant. These are the redesigned wear-out predictors: accumulated exposure, not conformity.
+    """
+    decay = float(cfg.features.get("exposure_decay", 0.8))
+    k = int(cfg.features.get("exposure_window_k", cfg.features.rolling_window_k))
+    df = df.copy()
+    for variant in VARIANTS:
+        emb = emb_by_variant.get(variant, {})
+        if not emb:
+            continue
+        ts = template_similarity(df, emb)
+        df[f"tmpl_sim_{variant}"] = ts
+        dose, winshare, streak = exposure_measures(df, ts, decay, k)
+        df[f"dose_{variant}"] = dose
+        df[f"winshare_{variant}"] = winshare
+        df[f"streak_{variant}"] = streak
+        for col in (f"tmpl_sim_{variant}", f"dose_{variant}",
+                    f"winshare_{variant}", f"streak_{variant}"):
+            df[f"{col}_z"] = _zscore_within_channel(df, col)
+    return df
+
+
 def _zscore_within_channel(df: pd.DataFrame, col: str) -> pd.Series:
     def z(s):
         sd = s.std(ddof=0)
