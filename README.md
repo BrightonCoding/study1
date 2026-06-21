@@ -8,6 +8,36 @@ engagement decay** than per-video novelty would predict — measured *within* ch
 > threat (a declining channel may chase the formula *because* it is losing engagement) is
 > probed explicitly, not assumed away. See `outputs/FINDINGS.md` (produced in M4).
 
+## Results so far (4 niches, ~52k videos)
+
+We collected **4 niches** via the YouTube Data API — personal finance (240 channels / 26.9k
+videos) plus pilots in **gaming, tech reviews, beauty** (~80 channels / ~8–9k videos each) —
+and separated two mechanisms the hypothesis had blurred together:
+
+- **Conformity / novelty-standout** (does a *single* on-formula video underperform?) — **small
+  but significant in every niche.** A video that breaks the channel's formula gets a ~1–2.5%
+  engagement bump (titles everywhere; thumbnails everywhere *except* finance, whose thumbnails
+  are uniformly formulaic).
+- **Cumulative wear-out** (does engagement fall as the channel piles up the *same* formula over
+  time? — recency-weighted "dose" and "streak") — **significant only in gaming.** Finance and
+  tech are null; beauty leans the right way but isn't significant.
+
+**Bottom line:** the per-video novelty effect is real and general; true *wear-out from repeated
+exposure* is **not** a general law — it appears only in gaming, and even there the
+reverse-causation probe leans the other way, so causality is unproven.
+
+**Read the results:**
+- [`outputs/cross_niche_summary.csv`](outputs/cross_niche_summary.csv) — every model × niche in
+  one table (`coef` sign, `p`, `significant`, `supports_H1`).
+- `outputs/FINDINGS.md` (finance) and `outputs/<niche>/FINDINGS.md` (gaming / tech_reviews /
+  beauty) — plain-language writeups.
+- `outputs/<niche>/tables/model_summaries.md` — full regression tables.
+- `outputs/<niche>/plots/` — within-channel scatter + thumbnail-tile sanity panels.
+
+> **Caveat (still the snapshot limitation, below):** these use one accumulated snapshot per
+> video, which is a weak instrument for a time-process like wear-out. The definitive test needs
+> the longitudinal `rescrape` data (M5), not yet started.
+
 ## The snapshot limitation (read this)
 The YouTube Data API and yt-dlp return a **current snapshot** of each video's stats, not a
 historical time series. Older videos mechanically have more accumulated views. So:
