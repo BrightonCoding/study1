@@ -8,35 +8,76 @@ engagement decay** than per-video novelty would predict — measured *within* ch
 > threat (a declining channel may chase the formula *because* it is losing engagement) is
 > probed explicitly, not assumed away. See `outputs/FINDINGS.md` (produced in M4).
 
-## Results so far (4 niches, ~52k videos)
+## Results
 
 We collected **4 niches** via the YouTube Data API — personal finance (240 channels / 26.9k
-videos) plus pilots in **gaming, tech reviews, beauty** (~80 channels / ~8–9k videos each) —
-and separated two mechanisms the hypothesis had blurred together:
+videos) plus **gaming, tech reviews, beauty** (~80 channels / ~8–9k videos each). **YouTube
+Shorts are excluded** from all results below (they are a different vertical format that
+contaminates both the outcome and the style measure). The full table is in
+**[`outputs/cross_niche_summary.csv`](outputs/cross_niche_summary.csv)**.
 
-- **Conformity / novelty-standout** (does a *single* on-formula video underperform?) — **small
-  but significant in every niche.** A video that breaks the channel's formula gets a ~1–2.5%
-  engagement bump (titles everywhere; thumbnails everywhere *except* finance, whose thumbnails
-  are uniformly formulaic).
-- **Cumulative wear-out** (does engagement fall as the channel piles up the *same* formula over
-  time? — recency-weighted "dose" and "streak") — **significant only in gaming.** Finance and
-  tech are null; beauty leans the right way but isn't significant.
+We tested two mechanisms the original hypothesis had blurred together:
 
-**Bottom line:** the per-video novelty effect is real and general; true *wear-out from repeated
-exposure* is **not** a general law — it appears only in gaming, and even there the
-reverse-causation probe leans the other way, so causality is unproven.
+1. **Conformity / novelty** — does a *single* video that matches the channel's formula get less
+   engagement (and does *breaking* it give a bump)?
+2. **Cumulative wear-out** — does engagement fall as the channel *piles up* the same formula over
+   time (recency-weighted "dose", and consecutive "streak")? **This is the original hypothesis.**
 
-**Read the results:**
-- [`outputs/cross_niche_summary.csv`](outputs/cross_niche_summary.csv) — every model × niche in
-  one table (`coef` sign, `p`, `significant`, `supports_H1`).
-- `outputs/FINDINGS.md` (finance) and `outputs/<niche>/FINDINGS.md` (gaming / tech_reviews /
-  beauty) — plain-language writeups.
-- `outputs/<niche>/tables/model_summaries.md` — full regression tables.
+### Coefficients on `engagement_rate` (within-channel, channel fixed effects)
+
+Each cell is the effect of more "sameness" on engagement. **Negative = sameness lowers
+engagement** (supports the hypothesis, H1). `*` = statistically significant (p < 0.05); no star
+≈ indistinguishable from zero. Magnitudes are on a mean engagement_rate of ~0.03–0.04, so
+−0.0010 ≈ a ~3% relative change.
+
+| measure | finance | gaming | tech | beauty |
+|---|---:|---:|---:|---:|
+| **CONFORMITY** — single on-formula video | | | | |
+| &nbsp;&nbsp;`core_thumbnail` | −0.0000 | −0.0014\* | −0.0020\* | −0.0014\* |
+| &nbsp;&nbsp;`core_title` | −0.0007\* | −0.0019\* | −0.0016\* | −0.0022\* |
+| &nbsp;&nbsp;`core_combined` | −0.0005\* | −0.0020\* | −0.0021\* | −0.0023\* |
+| **WEAR-OUT** — cumulative dose | | | | |
+| &nbsp;&nbsp;`dose_thumbnail` | +0.0004 | −0.0007\* | −0.0003 | −0.0003 |
+| &nbsp;&nbsp;`dose_title` | +0.0003 | −0.0010\* | −0.0000 | −0.0007 |
+| &nbsp;&nbsp;`dose_combined` | +0.0006 | −0.0010\* | −0.0002 | −0.0006 |
+| **WEAR-OUT** — streak | | | | |
+| &nbsp;&nbsp;`streak_combined` | +0.0001 | −0.0006\* | +0.0001 | −0.0004 |
+| **NOVELTY REBOUND** — breaking the formula | −0.0009\* | −0.0024\* | −0.0024\* | −0.0025\* |
+
+*(thumbnail = image style, title = text style, combined = both; N per niche ≈ finance 21k,
+gaming 6.4k, tech 6.6k, beauty 5.0k videos.)*
+
+### What it means
+
+- **Conformity / novelty is real and universal (top + bottom rows).** In every niche, a video
+  that *blends into* the channel's formula gets a little less engagement, and one that *breaks*
+  it gets a ~1–2.5% bump. (Thumbnails show this everywhere except finance, whose thumbnails are
+  already so uniformly formulaic there is no contrast to detect.) This is a **per-video standout
+  effect** — about one video at one moment, not about time.
+
+- **Cumulative wear-out is NOT general — it appears only in gaming (the two WEAR-OUT blocks).**
+  The accumulation measures (`dose`, `streak`) are significantly negative *only* in the gaming
+  column. Finance and tech are null; beauty leans the right way but is not significant. So the
+  original "audience fatigues on the repeated formula over time" hypothesis holds in **1 of 4
+  niches**, not as a general law. Plausibly because gaming audiences binge many videos from one
+  channel (real repeated exposure), while finance/tech/beauty are watched one-off.
+
+**Bottom line:** *People give a small, consistent bump to videos that break the formula — but
+they do not generally wear out on the formula over time. Genuine wear-out shows up only in
+gaming, and even there the reverse-causation probe leans the other way, so we cannot yet call it
+causal.*
+
+### Where to read more (all Shorts-excluded)
+- **[`outputs/cross_niche_summary.csv`](outputs/cross_niche_summary.csv)** — every model × niche,
+  with `coef`, `p`, `significant`, and `supports_H1` flags.
+- `outputs/no_shorts/FINDINGS.md` (finance) and `outputs/<niche>/no_shorts/FINDINGS.md`
+  (gaming / tech_reviews / beauty) — plain-language writeups.
+- `outputs/<niche>/no_shorts/tables/model_summaries.md` — full regression tables with CIs.
 - `outputs/<niche>/plots/` — within-channel scatter + thumbnail-tile sanity panels.
 
-> **Caveat (still the snapshot limitation, below):** these use one accumulated snapshot per
-> video, which is a weak instrument for a time-process like wear-out. The definitive test needs
-> the longitudinal `rescrape` data (M5), not yet started.
+> **Caveat — the snapshot limitation (see below).** All of this uses one accumulated snapshot
+> per video, which is a weak instrument for a time-process like wear-out. The definitive test
+> needs the longitudinal `rescrape` data (M5), which has not been started yet.
 
 ## The snapshot limitation (read this)
 The YouTube Data API and yt-dlp return a **current snapshot** of each video's stats, not a
